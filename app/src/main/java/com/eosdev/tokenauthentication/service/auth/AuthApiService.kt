@@ -1,20 +1,23 @@
 package com.eosdev.tokenauthentication.service.auth
 
 import com.eosdev.tokenauthentication.models.LoginResponse
-import retrofit2.Call
+import com.eosdev.tokenauthentication.models.User
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
-import com.eosdev.tokenauthentication.models.User
 
 interface AuthApiService {
 
     @Headers("Content-Type: application/json")
     @POST("Auth/Login")
-    fun login(@Body user: User): Call<LoginResponse>
+    suspend fun login(@Body user: User): LoginResponse
+
+    @Headers("Content-Type: application/json")
+    @POST("Auth/RefreshToken")
+    suspend fun refreshToken(@Body refreshToken: String): LoginResponse
 
     @Headers("Content-Type: application/json")
     @POST("Auth/Register")
-    fun register(@Body user: User): Call<LoginResponse>
+    suspend fun register(@Body user: User): LoginResponse
 
 }
