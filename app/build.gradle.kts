@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" // this version matches your Kotlin version
-
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0"
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android") version "2.49"
 }
 
 android {
@@ -43,7 +44,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.2"
     }
     packaging {
         resources {
@@ -61,9 +62,12 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     //Hilt
-    implementation(libs.hilt.android)
+    implementation("com.google.dagger:hilt-android:2.49")
+    kapt("com.google.dagger:hilt-compiler:2.49")
+
     //DataStore
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
