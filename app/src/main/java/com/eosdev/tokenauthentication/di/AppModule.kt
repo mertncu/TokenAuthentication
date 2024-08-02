@@ -1,6 +1,7 @@
 package com.eosdev.tokenauthentication.di
 
 import com.eosdev.tokenauthentication.service.auth.AuthApiService
+import com.eosdev.tokenauthentication.utils.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,17 +12,20 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(
+        authInterceptor: AuthInterceptor
+    ): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+
         return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
             .addInterceptor(logging)
             .build()
     }
@@ -30,7 +34,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://http://10.0.2.2:5174/api/")
+            .baseUrl("http://10.0.2.2:5174/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
