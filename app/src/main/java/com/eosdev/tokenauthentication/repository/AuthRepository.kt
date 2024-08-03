@@ -1,6 +1,7 @@
 package com.eosdev.tokenauthentication.repository
 
 import android.util.Log
+import com.eosdev.tokenauthentication.models.LoginResponse
 import com.eosdev.tokenauthentication.models.User
 import com.eosdev.tokenauthentication.service.auth.AuthApiService
 import com.eosdev.tokenauthentication.utils.TokenManager
@@ -12,15 +13,16 @@ class AuthRepository @Inject constructor(
 ) {
     private val tag = "AuthRepository"
 
-    suspend fun login(email: String, password: String): Boolean {
+    suspend fun login(email: String, password: String): LoginResponse? {
         return try {
             val loginResponse = apiService.login(User(email, password))
             tokenManager.saveToken(loginResponse.token)
             tokenManager.saveRefreshToken(loginResponse.refreshToken)
-            true
+            loginResponse
         } catch (e: Exception) {
             Log.e(tag, "Login failed: ${e.message}", e)
-            false
+            null
         }
     }
+
 }
