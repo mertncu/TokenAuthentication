@@ -23,8 +23,8 @@ fun HomeScreen(viewModel: LoginViewModel) {
     ) {
         Text(text = "Welcome to the Home Screen!")
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Email: $email")
+        Text(text = "Email: ${email ?: "No Email"}")
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Token: $token")
+        Text(text = "Token: ${token ?: "No Token"}")
     }
 }

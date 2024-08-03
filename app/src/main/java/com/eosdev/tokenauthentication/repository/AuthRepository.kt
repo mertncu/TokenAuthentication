@@ -16,13 +16,27 @@ class AuthRepository @Inject constructor(
     suspend fun login(email: String, password: String): LoginResponse? {
         return try {
             val loginResponse = apiService.login(User(email, password))
-            tokenManager.saveToken(loginResponse.token)
-            tokenManager.saveRefreshToken(loginResponse.refreshToken)
-            loginResponse
+
+            // Yanıtı loglayın
+            Log.d(tag, "API Response: $loginResponse")
+
+            val accessToken = loginResponse.data?.accessToken
+            if (accessToken != null) {
+                val token: String = accessToken.token ?: throw IllegalStateException("Token is null")
+                val refreshToken: String = accessToken.expiration ?: throw IllegalStateException("Expiration is null")
+
+                tokenManager.saveToken(token)
+                tokenManager.saveRefreshToken(refreshToken)
+                loginResponse
+            } else {
+                Log.e(tag, "AccessToken is null in the response")
+                null
+            }
         } catch (e: Exception) {
             Log.e(tag, "Login failed: ${e.message}", e)
             null
         }
     }
-
 }
+
+

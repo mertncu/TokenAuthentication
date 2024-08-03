@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eosdev.tokenauthentication.repository.AuthRepository
 import com.eosdev.tokenauthentication.models.LoginResponse
+import com.eosdev.tokenauthentication.models.AccessToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +32,7 @@ class LoginViewModel @Inject constructor(private val authRepository: AuthReposit
                 val loginResponse = authRepository.login(email, password)
                 if (loginResponse != null) {
                     _loginState.value = true
-                    _token.value = loginResponse.token
+                    _token.value = loginResponse.data?.accessToken?.token.toString()
                     _email.value = email
                 } else {
                     _loginState.value = false

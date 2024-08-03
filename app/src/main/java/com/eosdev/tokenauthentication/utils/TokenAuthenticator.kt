@@ -1,5 +1,6 @@
 package com.eosdev.tokenauthentication.utils
 
+import android.util.Log
 import com.eosdev.tokenauthentication.service.auth.AuthApiService
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -15,9 +16,10 @@ class TokenAuthenticator @Inject constructor(
 ) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         val newToken = runBlocking {
-            val refreshToken = tokenManager.refreshToken.first() ?: return@runBlocking null
+            val refreshToken = tokenManager.getRefreshToken() ?: return@runBlocking null
             val loginResponse = apiService.refreshToken(refreshToken)
-            loginResponse.token
+
+            loginResponse.data?.accessToken?.token
         } ?: return null
 
         runBlocking { tokenManager.saveToken(newToken) }

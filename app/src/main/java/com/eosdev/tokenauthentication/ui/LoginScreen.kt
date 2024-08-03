@@ -54,6 +54,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltVi
                 Text("Login")
             }
         }
+
         Spacer(modifier = Modifier.height(8.dp))
         if (loginState) {
             Text("Login successful")
