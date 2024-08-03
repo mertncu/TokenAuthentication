@@ -3,6 +3,18 @@ package com.eosdev.tokenauthentication.models
 import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
-    val token: String,
-    val refreshToken: String
+    @SerializedName("data")
+    val data: Data?
+)
+
+data class Data(
+    @SerializedName("accessToken")
+    val accessToken: AccessToken?
+)
+
+data class AccessToken(
+    @SerializedName("token")
+    val token: String? = null,
+    @SerializedName("expiration")
+    val expiration: String?  = null
 )
