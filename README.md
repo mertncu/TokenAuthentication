@@ -22,4 +22,5 @@ The aim of the project is to work on how to perform Authentication and Token Man
 
 https://github.com/user-attachments/assets/38245811-de71-4f10-a26c-6cf466bc659f
 
+- **[Medium Article of project](https://medium.com/p/4d94ea654067)** 
 
